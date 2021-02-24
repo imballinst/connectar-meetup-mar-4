@@ -1,39 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Card, ICardProps } from './components/Card';
 import './App.css';
 
-interface AppProps {}
+const CARD_CONTENTS: ICardProps[] = [
+  {
+    title: 'Tickatus Warlock',
+    date: 'February 24, 2021',
+    body:
+      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
+  },
+  {
+    title: 'Tickatus Warlock',
+    date: 'February 24, 2021',
+    body:
+      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
+  },
+  {
+    title: 'Tickatus Warlock',
+    date: 'February 24, 2021',
+    body:
+      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
+  },
+  {
+    title: 'Tickatus Warlock',
+    date: 'February 24, 2021',
+    body:
+      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
+  }
+];
 
-function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
+function App() {
+  const [contents, setContents] = useState(CARD_CONTENTS);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+    <div className="min-h-screen bg-indigo-600 p-4">
+      <form name="submit-rant">
+        <label
+          htmlFor="rant-content"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Website
+        </label>
+        <div className="mt-1 flex rounded-md shadow-sm">
+          <input
+            type="text"
+            name="rant-content"
+            id="rant-content"
+            className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+            placeholder="Write your rant..."
+          />
+        </div>
+      </form>
+
+      <section
+        aria-label="Cards"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        {CARD_CONTENTS.map((content) => (
+          <Card className="p-2" {...content} />
+        ))}
+      </section>
     </div>
   );
 }
