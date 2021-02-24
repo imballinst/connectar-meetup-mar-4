@@ -34,21 +34,45 @@ function App() {
 
   return (
     <div className="min-h-screen bg-indigo-600 p-4">
-      <form name="submit-rant">
-        <label
-          htmlFor="rant-content"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Website
-        </label>
-        <div className="mt-1 flex rounded-md shadow-sm">
-          <input
-            type="text"
-            name="rant-content"
-            id="rant-content"
-            className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-            placeholder="Write your rant..."
-          />
+      <form name="submit-rant" className="mb-16 w-full md:w-1/2">
+        <div>
+          <label
+            htmlFor="rant-title"
+            className="block text-sm font-bold text-indigo-100"
+          >
+            Rant title
+          </label>
+          <div className="mt-1 flex rounded-md shadow-sm">
+            <input
+              type="text"
+              name="rant-title"
+              id="rant-title"
+              className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
+            />
+          </div>
+        </div>
+        <div className="mt-2">
+          <label
+            htmlFor="rant-content"
+            className="block text-sm font-bold text-indigo-100"
+          >
+            Rant content
+          </label>
+          <div className="mt-1 flex rounded-md shadow-sm">
+            <textarea
+              name="rant-content"
+              id="rant-content"
+              className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
+            />
+          </div>
+        </div>
+        <div className="mt-4 text-right">
+          <button
+            type="submit"
+            className="w-24 inline-flex justify-center font-bold py-2 px-4 border border-transparent shadow-sm text-sm rounded-md text-indigo-500 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Post
+          </button>
         </div>
       </form>
 
