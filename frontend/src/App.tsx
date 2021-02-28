@@ -1,39 +1,46 @@
 import React, { ChangeEvent, useState } from 'react';
+
+import {
+  useQuery,
+  useMutation,
+  QueryClient,
+  QueryClientProvider,
+  useQueryClient
+} from 'react-query';
+
 import { Card, ICardProps } from './components/Card';
 import './App.css';
 
-const CARD_CONTENTS: ICardProps[] = [
-  {
-    title: 'Tickatus Warlock',
-    date: 'February 24, 2021',
-    body:
-      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
-  },
-  {
-    title: 'Tickatus Warlock',
-    date: 'February 24, 2021',
-    body:
-      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
-  },
-  {
-    title: 'Tickatus Warlock',
-    date: 'February 24, 2021',
-    body:
-      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
-  },
-  {
-    title: 'Tickatus Warlock',
-    date: 'February 24, 2021',
-    body:
-      "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
-  }
-];
-
 function App() {
-  const [contents, setContents] = useState(CARD_CONTENTS);
+  const queryClient = useQueryClient();
+
+  const { isLoading, data = [] } = useQuery<ICardProps[]>('rants', async () => {
+    const response = await fetch('/api/rants');
+    return response.json();
+  });
+  const mutation = useMutation<Response, Error, ICardProps, ICardProps[]>(
+    (newRant) =>
+      fetch('/api/rants', {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(newRant)
+      }),
+    {
+      onSuccess: async (response) => {
+        const json = await response.json();
+
+        queryClient.setQueryData<ICardProps[]>('rants', (oldData = []) => {
+          return oldData.concat(json);
+        });
+      }
+    }
+  );
+
   const [form, setForm] = useState<Omit<ICardProps, 'date' | 'className'>>({
     title: '',
-    body: ''
+    content: ''
   });
 
   function handleChangeInput(
@@ -47,12 +54,22 @@ function App() {
     }));
   }
 
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    mutation.mutate({
+      ...form,
+      date: new Date().toISOString()
+    });
+  }
+
   return (
     <div className="min-h-screen bg-indigo-600 p-4">
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 mb-16">
         <form
           name="submit-rant"
           className="col-span-3 md:col-span-2 lg:col-span-3"
+          onSubmit={onSubmit}
         >
           <div>
             <label
@@ -73,15 +90,15 @@ function App() {
           </div>
           <div className="mt-2">
             <label
-              htmlFor="body"
+              htmlFor="content"
               className="block text-sm font-bold text-indigo-100"
             >
               Rant content
             </label>
             <div className="mt-1 flex rounded-md shadow-sm">
               <textarea
-                name="body"
-                id="body"
+                name="content"
+                id="content"
                 onChange={handleChangeInput}
                 className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
               />
@@ -100,7 +117,7 @@ function App() {
         <div className="hidden md:block pl-4 pr-2 pt-6 py-14">
           <Card
             title={form.title || 'Title placeholder'}
-            body={form.body || 'Body placeholder'}
+            content={form.content || 'Body placeholder'}
             date="February 24, 2021"
             className="p-2 h-full"
           />
@@ -111,12 +128,23 @@ function App() {
         aria-label="Cards"
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {CARD_CONTENTS.map((content) => (
-          <Card className="p-2" {...content} />
-        ))}
+        {isLoading || mutation.isLoading
+          ? 'Loading...'
+          : data.map((content, index) => (
+              <Card key={index} className="p-2" {...content} />
+            ))}
       </section>
     </div>
   );
 }
 
-export default App;
+// Create a client.
+const contextQueryClient = new QueryClient();
+
+export default function Root() {
+  return (
+    <QueryClientProvider client={contextQueryClient}>
+      <App />
+    </QueryClientProvider>
+  );
+}
