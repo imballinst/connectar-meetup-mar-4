@@ -10,7 +10,8 @@
   },
   "watch": ["index.js", "rants.js"],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "PORT": 4000
   },
   "ext": "js,json"
 }
