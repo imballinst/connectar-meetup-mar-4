@@ -9,15 +9,22 @@ import {
 } from 'react-query';
 
 import { Card, ICardProps } from './components/Card';
+import { formatDate } from './helpers';
 import './App.css';
 
 function App() {
   const queryClient = useQueryClient();
 
-  const { isLoading, data = [] } = useQuery<ICardProps[]>('rants', async () => {
-    const response = await fetch('/api/rants');
-    return response.json();
-  });
+  const { isLoading, data = [] } = useQuery<ICardProps[]>(
+    'rants',
+    async () => {
+      const response = await fetch('/api/rants');
+      return response.json();
+    },
+    {
+      refetchInterval: 10000
+    }
+  );
   const mutation = useMutation<Response, Error, ICardProps, ICardProps[]>(
     (newRant) =>
       fetch('/api/rants', {
@@ -118,7 +125,7 @@ function App() {
           <Card
             title={form.title || 'Title placeholder'}
             content={form.content || 'Body placeholder'}
-            date="February 24, 2021"
+            date={formatDate(new Date())}
             className="p-2 h-full"
           />
         </div>
@@ -131,7 +138,7 @@ function App() {
         {isLoading || mutation.isLoading
           ? 'Loading...'
           : data.map((content, index) => (
-              <Card key={index} className="p-2" {...content} />
+              <Card key={index} className="p-2" {...content} relativeDate />
             ))}
       </section>
     </div>

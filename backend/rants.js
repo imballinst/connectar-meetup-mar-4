@@ -1,28 +1,28 @@
-const formatRFC7231 = require('date-fns/formatRFC7231');
+const formatISO = require('date-fns/formatISO');
 
 // This is "in-memory" database for rants.
 let rantsList = [
   {
     title: 'Tickatus Warlock',
-    date: formatRFC7231(new Date(2021, 1, 28)),
+    date: formatISO(new Date(2021, 1, 28)),
     content:
       "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
   },
   {
     title: 'Tickatus Warlock',
-    date: formatRFC7231(new Date(2021, 1, 27)),
+    date: formatISO(new Date(2021, 1, 27)),
     content:
       "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
   },
   {
     title: 'Tickatus Warlock',
-    date: formatRFC7231(new Date(2021, 1, 26)),
+    date: formatISO(new Date(2021, 1, 26)),
     content:
       "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
   },
   {
     title: 'Tickatus Warlock',
-    date: formatRFC7231(new Date(2021, 1, 25)),
+    date: formatISO(new Date(2021, 1, 25)),
     content:
       "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
   }
@@ -32,6 +32,10 @@ module.exports = {
   getRants,
   addRant
 };
+
+setInterval(() => {
+  rantsList = rantsList.concat({ ...rantsList[0] });
+}, 5000);
 
 // Get rants.
 function getRants(_req, res) {
@@ -45,7 +49,7 @@ function addRant(req, res) {
   const rantDate = date ? new Date(date) : new Date();
   const newRant = {
     title,
-    date: formatRFC7231(rantDate),
+    date: formatISO(rantDate),
     content
   };
 
