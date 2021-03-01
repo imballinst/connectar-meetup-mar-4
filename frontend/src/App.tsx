@@ -131,7 +131,7 @@ function App() {
         </div>
       </div>
 
-      <section
+      <ol
         aria-label="Cards"
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
@@ -140,7 +140,7 @@ function App() {
           : data.map((content, index) => (
               <Card key={index} className="p-2" {...content} relativeDate />
             ))}
-      </section>
+      </ol>
     </div>
   );
 }

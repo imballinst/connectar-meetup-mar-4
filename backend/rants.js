@@ -33,16 +33,16 @@ module.exports = {
   addRant
 };
 
-setInterval(() => {
-  rantsList = rantsList
-    .concat({
-      ...rantsList[0],
-      date: formatISO(new Date())
-    })
-    .sort((a, b) => {
-      return new Date(b.date).valueOf() - new Date(a.date).valueOf();
-    });
-}, 5000);
+// setInterval(() => {
+//   rantsList = rantsList
+//     .concat({
+//       ...rantsList[0],
+//       date: formatISO(new Date())
+//     })
+//     .sort((a, b) => {
+//       return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+//     });
+// }, 5000);
 
 // Get rants.
 function getRants(_req, res) {

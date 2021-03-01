@@ -1,3 +1,5 @@
 .snowpack
 build
 node_modules
+
+e2e/cypress/videos

@@ -17,19 +17,19 @@ export function Card({
   relativeDate
 }: ICardProps) {
   return (
-    <div
+    <li
       className={`border border-indigo-100 rounded-md text-indigo-100 ${className}`}
     >
       <div className="mb-4">
         <span className="block text-lg font-bold">{title}</span>
-        <span className="block text-xs italic">
+        <time dateTime={date} className="block text-xs italic">
           {relativeDate
             ? `${formatCardDate(new Date(date))} ago`
             : formatDate(new Date(date))}
-        </span>
+        </time>
       </div>
 
       <p className="text-sm">{content}</p>
-    </div>
+    </li>
   );
 }
