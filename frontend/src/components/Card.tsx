@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate, formatDateRelative } from '../helpers';
+import { formatDate, formatCardDate } from '../helpers';
 
 export interface ICardProps {
   className?: string;
@@ -24,7 +24,7 @@ export function Card({
         <span className="block text-lg font-bold">{title}</span>
         <span className="block text-xs italic">
           {relativeDate
-            ? formatDateRelative(new Date(date))
+            ? `${formatCardDate(new Date(date))} ago`
             : formatDate(new Date(date))}
         </span>
       </div>
