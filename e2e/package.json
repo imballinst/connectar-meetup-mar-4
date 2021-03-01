@@ -1,0 +1,13 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^6.5.0"
+  },
+  "scripts": {
+    "cypress": "cypress open --env E2E_BASE_URL=http://localhost:3000",
+    "test": "cypress -- --record --spec \"cypress/integration/*.test.js\" --env E2E_BASE_URL=http://localhost:4000"
+  }
+}
