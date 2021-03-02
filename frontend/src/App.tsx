@@ -121,14 +121,17 @@ function App() {
           </div>
         </form>
 
-        <div className="hidden md:block pl-4 pr-2 pt-6 py-14">
+        <section
+          aria-label="Preview post"
+          className="hidden md:block pl-4 pr-2 pt-6 py-14"
+        >
           <Card
             title={form.title || 'Title placeholder'}
             content={form.content || 'Body placeholder'}
-            date={formatDate(new Date())}
+            date={new Date().toISOString()}
             className="p-2 h-full"
           />
-        </div>
+        </section>
       </div>
 
       <ol
@@ -138,7 +141,9 @@ function App() {
         {isLoading || mutation.isLoading
           ? 'Loading...'
           : data.map((content, index) => (
-              <Card key={index} className="p-2" {...content} relativeDate />
+              <li key={index}>
+                <Card className="p-2" {...content} relativeDate />
+              </li>
             ))}
       </ol>
     </div>
