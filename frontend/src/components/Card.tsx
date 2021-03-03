@@ -1,5 +1,4 @@
 import React from 'react';
-import { formatDate } from '../helpers';
 
 export interface ICardProps {
   className?: string;
@@ -24,7 +23,7 @@ export function Card({
     >
       <span className="block text-lg font-bold">{title}</span>
       <time dateTime={date} className="block text-xs italic">
-        {formatDate(new Date(date))}
+        {date}
       </time>
 
       <p className="text-sm mt-4">{trimContentOnPreview(content, preview)}</p>
