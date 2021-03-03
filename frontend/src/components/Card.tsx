@@ -7,6 +7,7 @@ export interface ICardProps {
   content: string;
   date: string;
   relativeDate?: boolean;
+  preview?: boolean;
 }
 
 export function Card({
@@ -14,7 +15,8 @@ export function Card({
   content,
   date,
   className = '',
-  relativeDate
+  relativeDate,
+  preview
 }: ICardProps) {
   return (
     <div
@@ -29,7 +31,15 @@ export function Card({
           : formatDate(new Date(date))}
       </time>
 
-      <p className="text-sm mt-4">{content}</p>
+      <p className="text-sm mt-4">{trimContentOnPreview(content, preview)}</p>
     </div>
   );
+}
+
+function trimContentOnPreview(text: string, preview: boolean | undefined) {
+  if (preview && text.length > 280) {
+    return `${text.slice(0, 280)}...`;
+  }
+
+  return text;
 }

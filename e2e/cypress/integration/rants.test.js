@@ -46,7 +46,7 @@ context('Read and write rants', () => {
       });
   });
 
-  it('Write rant', () => {
+  it('Write rant: normal', () => {
     const TITLE = 'This is a sample rant';
     const CONTENT =
       "I am a front-end engineer and sometimes I don't know what I am doing.";
@@ -104,6 +104,68 @@ context('Read and write rants', () => {
     cy.get('ol[aria-label="Rants"] li:first-child p').should(
       'have.text',
       CONTENT
+    );
+  });
+
+  it('Write rant: post contents longer than 280 characters should be cut to 280 characters with ellipsis', () => {
+    const TITLE = 'This is a really long rant';
+    // This is `a` 290 times.
+    const CONTENT = Array.from(new Array(290), () => 'a').join('');
+    const EXPECTED_RESULT = `${CONTENT.slice(0, 280)}...`;
+
+    // Write the title.
+    cy.get('form[name="submit-rant"] input[name="title"]').type(TITLE);
+    cy.get('section[aria-label="Preview post"] span').should(
+      'contain.text',
+      TITLE
+    );
+
+    // Should show the current time.
+    cy.get('section[aria-label="Preview post"] time').then((selector) => {
+      const elmt = selector.get(0);
+
+      const datetime = elmt.getAttribute('datetime');
+      // The difference should be less than 2 seconds--or 2000 milliseconds--for offset.
+      expect(
+        Math.abs(new Date(datetime).valueOf() - new Date().valueOf())
+      ).to.be.lessThan(2000);
+    });
+
+    // Write the content.
+    cy.get('form[name="submit-rant"] textarea[name="content"]').type(CONTENT);
+    cy.get('section[aria-label="Preview post"] p').should(
+      'contain.text',
+      EXPECTED_RESULT
+    );
+
+    // Submit the content.
+    cy.get('form[name="submit-rant"] button').contains('Post').click();
+
+    // Re-check the form and previews: should be emptied.
+    cy.get('form[name="submit-rant"] input[name="title"]').should(
+      'have.value',
+      ''
+    );
+    cy.get('section[aria-label="Preview post"] span').should(
+      'contain.text',
+      ''
+    );
+
+    cy.get('form[name="submit-rant"] textarea[name="content"]').should(
+      'have.value',
+      ''
+    );
+    cy.get('section[aria-label="Preview post"] p').should('contain.text', '');
+
+    // The posted rant should be the first entry of the list.
+    cy.get('ol[aria-label="Rants"] li:first-child span').should(
+      'have.text',
+      TITLE
+    );
+
+    cy.get('ol[aria-label="Rants"] li:first-child p').should(
+      'have.text',
+      EXPECTED_RESULT
     );
   });
 

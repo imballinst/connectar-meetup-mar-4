@@ -134,6 +134,7 @@ function App() {
             content={form.content || 'Body placeholder'}
             date={new Date().toISOString()}
             className="p-2 h-full"
+            preview
           />
         </section>
       </div>
