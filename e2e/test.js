@@ -10,6 +10,7 @@ const cypress = require('cypress');
   await cypress.run({
     browser: 'chrome',
     config: require(path.join(__dirname, 'cypress.json')),
+    headless: true,
     spec: 'cypress/integration/*.test.js'
   });
 
