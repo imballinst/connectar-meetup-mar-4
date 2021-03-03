@@ -25,7 +25,11 @@ context('Read and write rants', () => {
           const timeText = timesText[i];
 
           olderPost = time;
-          const parsed = parse(timeText, 'MMMM dd, yyyy HH:mm', new Date());
+          const parsed = parse(
+            timeText,
+            'EEE, dd MMM yyyy HH:mm:ss Z',
+            new Date()
+          );
 
           expect(isNaN(parsed)).to.eq(false);
 
@@ -161,25 +165,6 @@ context('Read and write rants', () => {
       'have.text',
       EXPECTED_RESULT
     );
-  });
-
-  it('should re-fetch when the window re-focused after blurring', () => {
-    let latestTitle;
-
-    cy.get('ol[aria-label="Rants"] li:first-child span')
-      .then((el) => {
-        latestTitle = el.text();
-      })
-      .then(() => wait(6000))
-      .then(() => {
-        cy.window().blur();
-        cy.window().focus();
-      })
-      .then(() => wait(1000))
-      .then(() => cy.get('ol[aria-label="Rants"] li:first-child span'))
-      .then((el) => {
-        expect(el.text()).to.not.eq(latestTitle);
-      });
   });
 });
 
