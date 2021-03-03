@@ -33,14 +33,6 @@ module.exports = {
   addRant
 };
 
-setInterval(() => {
-  rantsList = rantsList.concat({
-    ...rantsList[rantsList.length - 1],
-    title: `${rantsList[0].title} ${rantsList.length}`,
-    date: formatISO(new Date())
-  });
-}, 5000);
-
 // Get rants.
 function getRants(_req, res) {
   res.send(sort(rantsList));

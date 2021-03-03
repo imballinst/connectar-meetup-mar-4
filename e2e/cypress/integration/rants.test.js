@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import { parse, differenceInDays } from 'date-fns';
+import { parse } from 'date-fns';
 
 context('Read and write rants', () => {
   before(() => {
