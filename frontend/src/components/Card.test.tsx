@@ -23,40 +23,42 @@ it('renders normal Card', () => {
   expect(getByText('March 04, 2021 00:00')).toBeInTheDocument();
 });
 
-it('renders a preview Card with short text', () => {
-  const date = new Date(2021, 2, 4);
-  const shortText = 'This is a test.';
+describe('preview', () => {
+  it('renders a preview Card with short text', () => {
+    const date = new Date(2021, 2, 4);
+    const shortText = 'This is a test.';
 
-  const { getByText } = render(
-    <Card
-      title="Hello, world!"
-      date={date.toISOString()}
-      content={shortText}
-      preview
-    />
-  );
+    const { getByText } = render(
+      <Card
+        title="Hello, world!"
+        date={date.toISOString()}
+        content={shortText}
+        preview
+      />
+    );
 
-  expect(getByText('Hello, world!')).toBeInTheDocument();
-  expect(getByText(shortText)).toBeInTheDocument();
-  expect(getByText('March 04, 2021 00:00')).toBeInTheDocument();
-});
+    expect(getByText('Hello, world!')).toBeInTheDocument();
+    expect(getByText(shortText)).toBeInTheDocument();
+    expect(getByText('March 04, 2021 00:00')).toBeInTheDocument();
+  });
 
-it('renders a preview Card with short text', () => {
-  const date = new Date(2021, 2, 4);
-  const superLongText = Array.from(new Array(290), () => 'a').join('');
+  it('renders a preview Card with short text', () => {
+    const date = new Date(2021, 2, 4);
+    const superLongText = Array.from(new Array(290), () => 'a').join('');
 
-  const { getByText } = render(
-    <Card
-      title="Hello, world!"
-      date={date.toISOString()}
-      content={superLongText}
-      preview
-    />
-  );
+    const { getByText } = render(
+      <Card
+        title="Hello, world!"
+        date={date.toISOString()}
+        content={superLongText}
+        preview
+      />
+    );
 
-  expect(getByText('Hello, world!')).toBeInTheDocument();
-  expect(getByText(`${superLongText.slice(0, 280)}...`)).toBeInTheDocument();
-  expect(getByText('March 04, 2021 00:00')).toBeInTheDocument();
+    expect(getByText('Hello, world!')).toBeInTheDocument();
+    expect(getByText(`${superLongText.slice(0, 280)}...`)).toBeInTheDocument();
+    expect(getByText('March 04, 2021 00:00')).toBeInTheDocument();
+  });
 });
 
 describe('renders a Card with relative date', () => {
@@ -69,7 +71,6 @@ describe('renders a Card with relative date', () => {
         date={date.toISOString()}
         content="This is a test."
         relativeDate
-        preview
       />
     );
 
@@ -88,7 +89,6 @@ describe('renders a Card with relative date', () => {
         date={date.toISOString()}
         content="This is a test."
         relativeDate
-        preview
       />
     );
 
