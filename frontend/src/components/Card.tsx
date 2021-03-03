@@ -1,12 +1,11 @@
 import React from 'react';
-import { formatDate, formatCardDate } from '../helpers';
+import { formatDate } from '../helpers';
 
 export interface ICardProps {
   className?: string;
   title: string;
   content: string;
   date: string;
-  relativeDate?: boolean;
   preview?: boolean;
 }
 
@@ -15,7 +14,6 @@ export function Card({
   content,
   date,
   className = '',
-  relativeDate,
   preview
 }: ICardProps) {
   return (
@@ -26,9 +24,7 @@ export function Card({
     >
       <span className="block text-lg font-bold">{title}</span>
       <time dateTime={date} className="block text-xs italic">
-        {relativeDate
-          ? formatCardDate(new Date(date))
-          : formatDate(new Date(date))}
+        {formatDate(new Date(date))}
       </time>
 
       <p className="text-sm mt-4">{trimContentOnPreview(content, preview)}</p>

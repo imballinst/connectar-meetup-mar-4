@@ -25,18 +25,12 @@ context('Read and write rants', () => {
           const timeText = timesText[i];
 
           olderPost = time;
-          const date = new Date(time);
+          const parsed = parse(timeText, 'MMMM dd, yyyy HH:mm', new Date());
 
-          if (Math.abs(differenceInDays(new Date(), date)) > 7) {
-            const parsed = parse(timeText, 'MMMM dd, yyyy HH:mm', new Date());
-
-            expect(isNaN(parsed)).to.eq(false);
-          } else {
-            expect(timeText).contains('ago');
-          }
+          expect(isNaN(parsed)).to.eq(false);
 
           if (newerPost !== undefined) {
-            expect(new Date(newerPost).valueOf()).greaterThan(
+            expect(new Date(newerPost).valueOf()).gte(
               new Date(olderPost).valueOf()
             );
           }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import {
   useQuery,
@@ -18,16 +18,10 @@ function App() {
     content: ''
   });
 
-  const { isLoading, data = [] } = useQuery<ICardProps[]>(
-    'rants',
-    async () => {
-      const response = await fetch('/api/rants');
-      return response.json();
-    },
-    {
-      refetchOnWindowFocus: true
-    }
-  );
+  const { isLoading, data = [] } = useQuery<ICardProps[]>('rants', async () => {
+    const response = await fetch('/api/rants');
+    return response.json();
+  });
   const mutation = useMutation<Response, Error, ICardProps, ICardProps[]>(
     (newRant) =>
       fetch('/api/rants', {
@@ -147,7 +141,7 @@ function App() {
           ? 'Loading...'
           : data.map((content, index) => (
               <li key={index}>
-                <Card className="p-2 h-full" {...content} relativeDate />
+                <Card className="p-2 h-full" {...content} />
               </li>
             ))}
       </ol>
