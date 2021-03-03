@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
   useQueryClient
 } from 'react-query';
+import { formatRFC7231 } from 'date-fns';
 
 import { Card, ICardProps } from './components/Card';
 import './App.css';
@@ -126,7 +127,7 @@ function App() {
           <Card
             title={form.title || 'Title placeholder'}
             content={form.content || 'Body placeholder'}
-            date={new Date().toISOString()}
+            date={formatRFC7231(new Date())}
             className="p-2 h-full"
             preview
           />
