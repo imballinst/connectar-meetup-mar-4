@@ -162,25 +162,6 @@ context('Read and write rants', () => {
       EXPECTED_RESULT
     );
   });
-
-  it('should re-fetch when the window re-focused after blurring', () => {
-    let latestTitle;
-
-    cy.get('ol[aria-label="Rants"] li:first-child span')
-      .then((el) => {
-        latestTitle = el.text();
-      })
-      .then(() => wait(6000))
-      .then(() => {
-        cy.window().blur();
-        cy.window().focus();
-      })
-      .then(() => wait(1000))
-      .then(() => cy.get('ol[aria-label="Rants"] li:first-child span'))
-      .then((el) => {
-        expect(el.text()).to.not.eq(latestTitle);
-      });
-  });
 });
 
 function wait(durationMs) {
