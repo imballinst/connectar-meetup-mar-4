@@ -36,7 +36,7 @@ context('Read and write rants', () => {
           }
 
           if (newerPost !== undefined) {
-            expect(new Date(newerPost).valueOf()).greaterThan(
+            expect(new Date(newerPost).valueOf()).gte(
               new Date(olderPost).valueOf()
             );
           }
