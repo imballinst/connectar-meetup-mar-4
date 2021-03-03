@@ -1,4 +1,5 @@
 const formatRFC7231 = require('date-fns/formatRFC7231');
+const parse = require('date-fns/parse');
 
 // This is "in-memory" database for rants.
 let rantsList = [
@@ -57,6 +58,10 @@ function addRant(req, res) {
 // Helper functions.
 function sort(array) {
   return [...array].sort((a, b) => {
-    return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+    return parseRFC7231(b.date).valueOf() - parseRFC7231(a.date).valueOf();
   });
+}
+
+function parseRFC7231(dateString) {
+  return parse(dateString, "EEE, dd MMM yyyy HH:mm:ss 'GMT'", new Date());
 }

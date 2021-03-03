@@ -18,7 +18,6 @@ app.get('/api/rants', getRants);
 app.post('/api/rants', addRant);
 
 app.get('/', (_req, res) => {
-  console.log(__dirname);
   res.sendFile(__dirname + '/build/index.html');
 });
 

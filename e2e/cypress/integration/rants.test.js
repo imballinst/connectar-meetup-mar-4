@@ -27,7 +27,7 @@ context('Read and write rants', () => {
           olderPost = time;
           const parsed = parse(
             timeText,
-            'EEE, dd MMM yyyy HH:mm:ss Z',
+            "EEE, dd MMM yyyy HH:mm:ss 'GMT'",
             new Date()
           );
 
