@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import {
   useQuery,
@@ -9,11 +9,14 @@ import {
 } from 'react-query';
 
 import { Card, ICardProps } from './components/Card';
-import { formatDate } from './helpers';
 import './App.css';
 
 function App() {
   const queryClient = useQueryClient();
+  const [form, setForm] = useState<Omit<ICardProps, 'date' | 'className'>>({
+    title: '',
+    content: ''
+  });
 
   const { isLoading, data = [] } = useQuery<ICardProps[]>(
     'rants',
@@ -22,7 +25,7 @@ function App() {
       return response.json();
     },
     {
-      refetchInterval: 10000
+      refetchOnWindowFocus: true
     }
   );
   const mutation = useMutation<Response, Error, ICardProps, ICardProps[]>(
@@ -38,17 +41,16 @@ function App() {
       onSuccess: async (response) => {
         const json = await response.json();
 
+        setForm({
+          title: '',
+          content: ''
+        });
         queryClient.setQueryData<ICardProps[]>('rants', (oldData = []) => {
-          return oldData.concat(json);
+          return [json].concat(oldData);
         });
       }
     }
   );
-
-  const [form, setForm] = useState<Omit<ICardProps, 'date' | 'className'>>({
-    title: '',
-    content: ''
-  });
 
   function handleChangeInput(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -90,6 +92,7 @@ function App() {
                 type="text"
                 name="title"
                 id="title"
+                value={form.title}
                 onChange={handleChangeInput}
                 className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
               />
@@ -106,6 +109,7 @@ function App() {
               <textarea
                 name="content"
                 id="content"
+                value={form.content}
                 onChange={handleChangeInput}
                 className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
               />
@@ -142,7 +146,7 @@ function App() {
           ? 'Loading...'
           : data.map((content, index) => (
               <li key={index}>
-                <Card className="p-2" {...content} relativeDate />
+                <Card className="p-2 h-full" {...content} relativeDate />
               </li>
             ))}
       </ol>

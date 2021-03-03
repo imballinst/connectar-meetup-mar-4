@@ -6,11 +6,11 @@ export function formatDate(date: Date) {
 
 export function formatCardDate(date: Date) {
   const currentDate = new Date();
-  const diffInDays = differenceInDays(date, currentDate);
+  const diffInDays = Math.abs(differenceInDays(date, currentDate));
 
   if (diffInDays > 7) {
     return formatDate(date);
   }
 
-  return formatDistanceStrict(date, currentDate);
+  return `${formatDistanceStrict(date, currentDate)} ago`;
 }

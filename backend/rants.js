@@ -22,7 +22,7 @@ let rantsList = [
   },
   {
     title: 'Tickatus Warlock',
-    date: formatISO(new Date(2021, 1, 25)),
+    date: formatISO(new Date(2021, 1, 20)),
     content:
       "Playing against Tickatus Warlock is so tense. I need to draw my key cards before it eats them. Whenever I face a Warlock, I pray that it can't tick on curve."
   }
@@ -33,20 +33,17 @@ module.exports = {
   addRant
 };
 
-// setInterval(() => {
-//   rantsList = rantsList
-//     .concat({
-//       ...rantsList[0],
-//       date: formatISO(new Date())
-//     })
-//     .sort((a, b) => {
-//       return new Date(b.date).valueOf() - new Date(a.date).valueOf();
-//     });
-// }, 5000);
+setInterval(() => {
+  rantsList = rantsList.concat({
+    ...rantsList[rantsList.length - 1],
+    title: `${rantsList[0].title} ${rantsList.length}`,
+    date: formatISO(new Date())
+  });
+}, 5000);
 
 // Get rants.
 function getRants(_req, res) {
-  res.send(rantsList);
+  res.send(sort(rantsList));
 }
 
 // Add a rant.
@@ -57,10 +54,17 @@ function addRant(req, res) {
   const newRant = {
     title,
     date: formatISO(rantDate),
-    content
+    content: content.length > 280 ? `${content.substring(0, 280)}...` : content
   };
 
   rantsList = rantsList.concat(newRant);
 
   res.send(newRant);
+}
+
+// Helper functions.
+function sort(array) {
+  return [...array].sort((a, b) => {
+    return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+  });
 }
